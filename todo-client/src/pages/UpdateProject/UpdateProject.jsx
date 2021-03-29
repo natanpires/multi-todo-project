@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useRouter } from '../../utils/router'
 
 import { Container } from '../../layout/default';
 
@@ -8,7 +8,8 @@ import ProjectForm from '../../components/ProjectForm';
 import * as S from './styles';
 
 function UpdateProject() {
-  const { id } = useParams();
+  const router = useRouter();
+  const { id } = router.query;
 
   return (
     <>
