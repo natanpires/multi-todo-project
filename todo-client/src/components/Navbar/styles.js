@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 export const Wrapper = styled.header`
   background: #ededed;
   box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 16%);
+  padding: 8px calc(16px);
+  margin: 0px auto;
+  width: 100%;
 `;
 
 export const Container = styled.div`
