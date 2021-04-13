@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container } from '../../layout/default';
 
@@ -6,25 +7,24 @@ import Navbar from '../../components/Navbar';
 import Project from '../../components/Project';
 import ProjectForm from '../../components/ProjectForm';
 
-
-import { projectApi } from '../../services'
+import { actions as projectActions } from '../../store/ducks/project';
 
 import * as S from './styles';
 
 function Home() {
-  const [projects, setProjects] = useState([]);
+  const dispatch = useDispatch();
+  const { projects } = useSelector(state => state.project);
 
   const getProjects = useCallback(async () => {
-    const { data } = await projectApi.read()
-    setProjects(data || []);
-  }, []);
+    dispatch(projectActions.readRequest())
+  }, [dispatch]);
 
-  useEffect(() => {
+  useMemo(() => {
     getProjects();
   }, [getProjects]);
 
   const handleRemoveProject = (id) => {
-    setProjects((state) => state.filter((p) => p.projectId !== id));
+    dispatch(projectActions.deleteRequest(id))
   };
 
   return (

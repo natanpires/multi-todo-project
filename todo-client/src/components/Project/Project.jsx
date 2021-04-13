@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { MdDelete as DeleteIcon, MdEdit as EditIcon } from 'react-icons/md';
@@ -7,11 +8,12 @@ import Button from '../Button';
 import Input from '../Input';
 import Tooltip from '../Tooltip';
 
-import { taskApi, projectApi } from '../../services'
+import { taskApi } from '../../services'
 
 import * as S from './styles';
 
 function Project({ projectId, name, tasks, onRemove }) {
+  const projects = useSelector(state => state.projects)
   const [todos, setTodos] = useState([]);
   const [dones, setDones] = useState([]);
 
@@ -26,14 +28,12 @@ function Project({ projectId, name, tasks, onRemove }) {
 
   const onSubmit = async (formData) => {
     await taskApi.create({ ...formData }, projectId);
-    const { data } = await projectApi.read();
-    const { tasks } = data.find(e => e.projectId === projectId);
+    const { tasks } = projects.find(e => e.projectId === projectId);
     setTodos((state) => [...state, tasks[tasks.length - 1]]);
     reset();
   };
 
   const handleRemoveProject = async () => {
-    await projectApi.delete(projectId);
     onRemove(projectId);
   };
 
